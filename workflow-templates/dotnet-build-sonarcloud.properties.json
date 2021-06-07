@@ -1,0 +1,8 @@
+{
+    "name": "Dotnet Build with SonarCloud",
+    "description": "Dotnet Build with SonarCloud CI workflow template.",
+    "iconName": "example-icon",
+    "categories": [
+        "C#"
+    ]
+}

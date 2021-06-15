@@ -7,14 +7,22 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [ $default-branch ]
+  
+inputs:
+  build_path:
+    description: The path of the solution to build
+    required: true
+  base_path:
+    description: The base path will be used as the target for SonarCloud scanning, normally the root of the solution
+    required: true
+  dotnet_core_version:
+    description: The version of dotnet core used for the application 
+    required: false
+    default: 5.0.x
 
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
-    env:
-      DOTNET_CORE_VERSION: 5.0.x
-      BUILD_PATH: ./src/Airslip.Identity.sln
-      BASE_PATH: src
     steps:
     - uses: actions/checkout@v2
       with:
@@ -22,19 +30,19 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.7.2
       with:
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+        dotnet-version: ${{ github.event.inputs.dotnet_core_version }}
     - name: Add nuget feed
       run: dotnet nuget add source --username ${{ secrets.PACKAGE_USER }} --password ${{ secrets.PACKAGE_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/airslip-ltd/index.json"
     - name: Install dependencies
-      run: dotnet restore ${{ env.BUILD_PATH }}
+      run: dotnet restore ${{ github.event.inputs.build_path }}
     - name: Build
-      run: dotnet build ${{ env.BUILD_PATH }} --no-restore
+      run: dotnet build ${{ github.event.inputs.build_path }} --no-restore
     - name: Test
-      run: dotnet test ${{ env.BUILD_PATH }} --no-build --verbosity normal
+      run: dotnet test ${{ github.event.inputs.build_path }} --no-build --verbosity normal
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       with:
-        projectBaseDir: ${{ env.BASE_PATH }}
+        projectBaseDir: ${{ github.event.inputs.base_path }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

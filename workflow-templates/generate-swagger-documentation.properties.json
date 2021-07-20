@@ -1,0 +1,8 @@
+{
+    "name": "Generate Swagger Documentation",
+    "description": "Generate Swagger Documentation CI workflow template.",
+    "iconName": "dotnet",
+    "categories": [
+        "C#"
+    ]
+}

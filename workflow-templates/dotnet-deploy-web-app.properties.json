@@ -1,0 +1,8 @@
+{
+    "name": "DDeploy dotnet Web Application",
+    "description": "Deploy dotnet Web Application workflow template.",
+    "iconName": "dotnet",
+    "categories": [
+        "C#"
+    ]
+}

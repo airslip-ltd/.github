@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOTNET_CORE_VERSION: 5.0.x
-      BUILD_PATH: ./src/Airslip.Identity.sln
+      BUILD_PATH: ./src/<solution file>
       SONAR_PROJECT_KEY: proj_key
     steps:
     - uses: actions/checkout@v2
